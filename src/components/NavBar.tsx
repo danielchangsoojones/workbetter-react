@@ -48,8 +48,8 @@ export default function NavBar() {
             </NavItem>
             <AuthenticatedTemplate>
               <NavItem>
-                <RouterNavLink to="/calendar" className="nav-link">
-                  Calendar
+                <RouterNavLink to="/mailbox" className="nav-link">
+                  Mail Box
                 </RouterNavLink>
               </NavItem>
             </AuthenticatedTemplate>

@@ -9,7 +9,7 @@ import {
 
 import App from "./App";
 import config from "./utils/Config";
-import reportWebVitals from "./utils/reportWebVitals";
+import reportWebVitals from "./reportWebVitals";
 import "./index.css";
 
 const msalInstance = new PublicClientApplication({

@@ -5,10 +5,10 @@ import { IPublicClientApplication } from "@azure/msal-browser";
 
 import ProvideAppContext from "./context/AppContext";
 import ErrorMessage from "./components/ErrorMessage";
-import Calendar from "./components/Calendar";
+import MailBox from "./components/MailBox";
+import MailView from "./components/MailBox/MailView";
 import NavBar from "./components/NavBar";
 import Welcome from "./components/Welcome";
-import NewEvent from "./components/NewEvent";
 
 import "bootstrap/dist/css/bootstrap.css";
 
@@ -25,10 +25,9 @@ export default function App({ pca }: AppProps) {
           <Container>
             <ErrorMessage />
             <Routes>
-              <Route path="/" element={<Welcome />}>
-                <Route path="calendar" element={<Calendar />} />
-                <Route path="newevent" element={<NewEvent />} />
-              </Route>
+              <Route path="/" element={<Welcome />} />
+              <Route path="/mailbox" element={<MailBox />} />
+              <Route path="/mail/:mailId" element={<MailView />} />
             </Routes>
           </Container>
         </BrowserRouter>

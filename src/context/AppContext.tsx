@@ -10,14 +10,14 @@ import { InteractionType, PublicClientApplication } from "@azure/msal-browser";
 import { useMsal } from "@azure/msal-react";
 
 import config from "../utils/Config";
-import { getUser } from "../utils/GraphService";
+import { getAllMails, getUser } from "../utils/GraphService";
+import { Mail } from "../type/MailBoxType";
 
 export interface AppUser {
   displayName?: string;
   email?: string;
   avatar?: string;
-  timeZone?: string;
-  timeFormat?: string;
+  mails?: Mail[];
 }
 
 export interface AppError {
@@ -27,9 +27,12 @@ export interface AppError {
 
 type AppContext = {
   user?: AppUser;
+  mails?: Mail[];
   error?: AppError;
   signIn?: MouseEventHandler<HTMLElement>;
   signOut?: MouseEventHandler<HTMLElement>;
+  getMails?: Function;
+  getMailByID?: Function;
   displayError?: Function;
   clearError?: Function;
   authProvider?: AuthCodeMSALBrowserAuthenticationProvider;
@@ -37,9 +40,12 @@ type AppContext = {
 
 const appContext = createContext<AppContext>({
   user: undefined,
+  mails: undefined,
   error: undefined,
   signIn: undefined,
   signOut: undefined,
+  getMails: undefined,
+  getMailByID: undefined,
   displayError: undefined,
   clearError: undefined,
   authProvider: undefined,
@@ -63,6 +69,7 @@ export default function ProvideAppContext({
 function useProvideAppContext() {
   const [user, setUser] = useState<AppUser | undefined>(undefined);
   const [error, setError] = useState<AppError | undefined>(undefined);
+  const [mails, setMails] = useState<Mail[] | undefined>(undefined);
 
   const msal = useMsal();
 
@@ -97,9 +104,9 @@ function useProvideAppContext() {
             setUser({
               displayName: user.displayName || "",
               email: user.mail || user.userPrincipalName || "",
-              timeFormat: user.mailboxSettings?.timeFormat || "h:mm a",
-              timeZone: user.mailboxSettings?.timeZone || "UTC",
             });
+
+            await getMails();
           }
         } catch (err: any) {
           displayError(err.message);
@@ -118,11 +125,11 @@ function useProvideAppContext() {
     // Get the user from Microsoft Graph
     const user = await getUser(authProvider);
 
+    console.log(user);
+
     setUser({
       displayName: user.displayName || "",
       email: user.mail || user.userPrincipalName || "",
-      timeFormat: user.mailboxSettings?.timeFormat || "",
-      timeZone: user.mailboxSettings?.timeZone || "UTC",
     });
   };
 
@@ -131,11 +138,29 @@ function useProvideAppContext() {
     setUser(undefined);
   };
 
+  const getMails = async () => {
+    try {
+      const response: Array<Mail> = await getAllMails(authProvider);
+      setMails(response);
+    } catch (err: any) {
+      displayError!(err.message);
+    }
+  };
+
+  const getMailByID = (mailId: string) => {
+    const mail = mails?.filter((mail) => mail.id == mailId);
+
+    return mail;
+  };
+
   return {
     user,
+    mails,
     error,
     signIn,
     signOut,
+    getMails,
+    getMailByID,
     displayError,
     clearError,
     authProvider,
