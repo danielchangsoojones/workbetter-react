@@ -15,7 +15,7 @@ jest.spyOn(pca, 'addEventCallback').mockImplementation((fn) => {
 })
 
 test('renders welcome page', () => {
-  render(<App pca = {pca} />);
+  render(<App />);
   const titleElement = screen.getByRole('heading');
   expect(titleElement).toBeInTheDocument();
   expect(titleElement).toHaveTextContent(/React Graph Tutorial/i);

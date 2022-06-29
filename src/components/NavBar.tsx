@@ -12,31 +12,15 @@ import {
   UnauthenticatedTemplate,
 } from "@azure/msal-react";
 
-import { AppUser, useAppContext } from "../context/AppContext";
-
-interface UserAvatarProps {
-  user: AppUser;
-}
-
-function UserAvatar(props: UserAvatarProps) {
-  // If a user avatar is available, return an img tag with the pic
-  return (
-    <img
-      src={props.user.avatar || "/images/no-profile-photo.png"}
-      alt="user"
-      className="rounded-circle align-self-center mr-2"
-      style={{ width: "32px" }}
-    ></img>
-  );
-}
+import { useAppContext } from "../context/AppContext";
 
 export default function NavBar() {
-  const app = useAppContext();
-  const user = app.user || { displayName: "", email: "" };
+  // const app = useAppContext();
+  // const user = app.user || { displayName: "", email: "" };
 
   return (
     <Navbar bg="dark" variant="dark" expand="md" fixed="top">
-      <Container>
+      {/* <Container>
         <Navbar.Brand href="/">Outlook Email</Navbar.Brand>
         <Navbar.Toggle />
         <Navbar.Collapse>
@@ -76,7 +60,7 @@ export default function NavBar() {
             </UnauthenticatedTemplate>
           </Nav>
         </Navbar.Collapse>
-      </Container>
+      </Container> */}
     </Navbar>
   );
 }

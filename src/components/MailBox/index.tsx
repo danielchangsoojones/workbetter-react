@@ -7,17 +7,17 @@ import { useAppContext } from "../../context/AppContext";
 import MailBoxRow from "./MailBoxRow";
 
 function MailBox() {
-  const app = useAppContext();
+  // const app = useAppContext();
 
-  const [mails, setMails] = useState<Array<Mail>>();
+  // const [mails, setMails] = useState<Array<Mail>>();
 
-  useEffect(() => {
-    app.mails && setMails(app.mails);
-  }, [app.mails]);
+  // useEffect(() => {
+  //   app.mails && setMails(app.mails);
+  // }, [app.mails]);
 
   return (
     <AuthenticatedTemplate>
-      <div className="mt-5">
+      {/* <div className="mt-5">
         <h1 className="mb-3">Mail Box</h1>
       </div>
       <div className="table-responsive">
@@ -38,7 +38,7 @@ function MailBox() {
             </tbody>
           </Table>
         )}
-      </div>
+      </div> */}
     </AuthenticatedTemplate>
   );
 }
