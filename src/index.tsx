@@ -1,14 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import {
-  PublicClientApplication,
-  EventType,
-  EventMessage,
-  AuthenticationResult,
-} from "@azure/msal-browser";
 
 import App from "./App";
-import config from "./utils/Config";
 import reportWebVitals from "./reportWebVitals";
 import "./index.css";
 

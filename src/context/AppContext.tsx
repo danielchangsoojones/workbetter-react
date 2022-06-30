@@ -1,11 +1,9 @@
 import React, {
   useContext,
   createContext,
-  useState,
-  useEffect,
 } from "react";
 const io = require('socket.io-client');
-const socket = io('http://localhost:1337/msal/wss');
+const socket = io('http://localhost:5000');
 
 type AppContext = {
   socket: any;
@@ -31,9 +29,6 @@ export default function ProvideAppContext({
 }
 
 function useProvideAppContext() {
-  useEffect(() => {
-  });
-
   return {
     socket
   };
