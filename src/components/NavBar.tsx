@@ -1,82 +1,38 @@
-import { NavLink as RouterNavLink } from "react-router-dom";
-import {
-  Container,
-  Dropdown,
-  Navbar,
-  Nav,
-  NavDropdown,
-  NavItem,
-} from "react-bootstrap";
-import {
-  AuthenticatedTemplate,
-  UnauthenticatedTemplate,
-} from "@azure/msal-react";
+import { Dropdown } from "react-bootstrap";
+import { useAppContext } from "../context/AppContext";
 
-import { AppUser, useAppContext } from "../context/AppContext";
+import { User } from "../type/UserType";
+import config from "../utils/Config";
 
-interface UserAvatarProps {
-  user: AppUser;
+interface UserPropsType {
+  user: User | undefined;
+  subscriptionId: string | undefined;
 }
 
-function UserAvatar(props: UserAvatarProps) {
-  // If a user avatar is available, return an img tag with the pic
-  return (
-    <img
-      src={props.user.avatar || "/images/no-profile-photo.png"}
-      alt="user"
-      className="rounded-circle align-self-center mr-2"
-      style={{ width: "32px" }}
-    ></img>
-  );
-}
-
-export default function NavBar() {
-  const app = useAppContext();
-  const user = app.user || { displayName: "", email: "" };
+export default function NavBar({ user, subscriptionId }: UserPropsType) {
+  const { socket } = useAppContext();
 
   return (
-    <Navbar bg="dark" variant="dark" expand="md" fixed="top">
-      <Container>
-        <Navbar.Brand href="/">Outlook Email</Navbar.Brand>
-        <Navbar.Toggle />
-        <Navbar.Collapse>
-          <Nav className="me-auto" navbar>
-            <NavItem>
-              <RouterNavLink to="/" className="nav-link">
-                Home
-              </RouterNavLink>
-            </NavItem>
-            <AuthenticatedTemplate>
-              <NavItem>
-                <RouterNavLink to="/mailbox" className="nav-link">
-                  Mail Box
-                </RouterNavLink>
-              </NavItem>
-            </AuthenticatedTemplate>
-          </Nav>
-          <Nav className="ms-auto align-items-center" navbar>
-            <AuthenticatedTemplate>
-              <NavDropdown
-                title={<UserAvatar user={user} />}
-                id="user-dropdown"
-                align="end"
-              >
-                <h5 className="dropdown-item-text mb-0">{user.displayName}</h5>
-                <p className="dropdown-item-text text-muted mb-0">
-                  {user.email}
-                </p>
-                <Dropdown.Divider />
-                <Dropdown.Item onClick={app.signOut!}>Sign Out</Dropdown.Item>
-              </NavDropdown>
-            </AuthenticatedTemplate>
-            <UnauthenticatedTemplate>
-              <NavItem>
-                <Nav.Link onClick={app.signIn!}>Sign In</Nav.Link>
-              </NavItem>
-            </UnauthenticatedTemplate>
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+    <header className="pb-3 mb-4 border-bottom py-4">
+      <div className="d-flex align-items-center text-dark">
+        <span className="fs-4 flex-grow-1">Outlook Email Inbox</span>
+        {user && (
+          <Dropdown>
+            <Dropdown.Toggle variant="success" id="dropdown-basic">
+              User Info
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu>
+              <h6 className="dropdown-item-text mb-0">{user.username}</h6>
+              <p className="dropdown-item-text mb-0">{user.email}</p>
+              <Dropdown.Divider />
+              <Dropdown.Item href="/msal/delegated/signout">
+                Sign Out
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        )}
+      </div>
+    </header>
   );
 }
