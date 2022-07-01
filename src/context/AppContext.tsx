@@ -25,7 +25,7 @@ export default function ProvideAppContext({
 }
 
 function useProvideAppContext() {
-  const socket = io("ws://localhost:1337", {
+  const socket = io("/", {
     transports: ["polling"],
     path: "/socket"
   });
