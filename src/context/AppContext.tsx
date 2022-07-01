@@ -1,9 +1,5 @@
-import React, {
-  useContext,
-  createContext,
-} from "react";
-const io = require('socket.io-client');
-const socket = io('http://localhost:5000');
+import React, { useContext, createContext } from "react";
+import { io } from "socket.io-client";
 
 type AppContext = {
   socket: any;
@@ -29,7 +25,12 @@ export default function ProvideAppContext({
 }
 
 function useProvideAppContext() {
+  const socket = io("ws://localhost:1337", {
+    transports: ["polling"],
+    path: "/socket"
+  });
+
   return {
-    socket
+    socket,
   };
 }

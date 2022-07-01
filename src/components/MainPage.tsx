@@ -17,7 +17,7 @@ const customStyles = {
     bottom: "auto",
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
-    width: "60%"
+    width: "60%",
   },
 };
 
@@ -36,6 +36,7 @@ export default function MainPage() {
   useEffect(() => {
     socket.on("notification_received", (payload: any) => {
       setMessages((prev) => [payload, ...prev]);
+
       toast("New Email", {
         position: "bottom-right",
         autoClose: 1000,
@@ -64,6 +65,7 @@ export default function MainPage() {
       socket.off("notification_received");
       socket.off("error");
       socket.off("inbox");
+      socket.off("user");
     };
   });
 
@@ -87,7 +89,7 @@ export default function MainPage() {
   return (
     <div>
       <NavBar user={user} subscriptionId={subscriptionId} />
-      <div className="p-5 mb-4 bg-light rounded-3">
+      <div className="p-3 mb-4 bg-light rounded-3">
         <div className="table-responsive">
           {messages && (
             <Table size="sm mail-table">
